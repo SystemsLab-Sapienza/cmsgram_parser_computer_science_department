@@ -10,7 +10,7 @@ import (
 	"github.com/garyburd/redigo/redis"
 )
 
-func sendUpdate(f *Feed) error {
+func sendUpdate(f *Feed) (err error) {
 	var payload = struct {
 		Key   string
 		Value string
@@ -19,16 +19,16 @@ func sendUpdate(f *Feed) error {
 	// Encode the payload into JSON
 	data, err := json.Marshal(&payload)
 	if err != nil {
-		return err
+		return
 	}
 
 	// Send the payload TODO get URL from config file
 	_, err = http.Post(Config.BotUri, "application/json", bytes.NewReader(data))
 	if err != nil {
-		return err
+		return
 	}
 
-	return nil
+	return
 }
 
 func updateFeed(f *Feed) (err error) {
