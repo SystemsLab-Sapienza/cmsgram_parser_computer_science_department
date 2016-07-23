@@ -5,7 +5,7 @@ import (
 	"os"
 	"time"
 
-	"infext/config"
+	"bitbucket.org/ansijax/rfidlab_telegramdi_parser/config"
 
 	"github.com/garyburd/redigo/redis"
 )

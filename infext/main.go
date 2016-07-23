@@ -1,9 +1,9 @@
 package main
 
 import (
-	"infext/config"
-	// "infext/newscrawler"
-	"infext/rssfeed"
+	"bitbucket.org/ansijax/rfidlab_telegramdi_parser/config"
+	// "bitbucket.org/ansijax/rfidlab_telegramdi_parser/newscrawler"
+	"bitbucket.org/ansijax/rfidlab_telegramdi_parser/rssfeed"
 )
 
 func main() {
