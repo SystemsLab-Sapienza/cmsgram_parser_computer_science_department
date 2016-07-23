@@ -12,12 +12,12 @@ import (
 
 // Global variables
 var (
-	Config *config.Config
+	Config config.Config
 	Pool   *redis.Pool
 )
 
-func Start(conf *config.Config) {
-	const delay = 1
+func Start(conf config.Config) {
+	const delay = 1 // Delay in minutes
 	var flist FeedList
 
 	// Create the log file

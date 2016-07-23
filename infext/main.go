@@ -16,5 +16,5 @@ func main() {
 	// go newscrawler.Start()
 
 	// Start the cralwer for the RSS feeds
-	rssfeed.Start(&conf)
+	rssfeed.Start(conf)
 }

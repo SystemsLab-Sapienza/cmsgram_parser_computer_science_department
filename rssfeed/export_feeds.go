@@ -25,6 +25,7 @@ func exportFeeds(filepath string) error {
 		log.Println(err)
 		return err
 	}
+	defer file.Close()
 
 	// Create a new CSV writer for the file
 	w := csv.NewWriter(file)

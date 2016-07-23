@@ -22,8 +22,8 @@ func sendUpdate(f *Feed) (err error) {
 		return
 	}
 
-	// Send the payload TODO get URL from config file
-	_, err = http.Post(Config.BotUri, "application/json", bytes.NewReader(data))
+	// Send the payload
+	_, err = http.Post(Config.BotURI, "application/json", bytes.NewReader(data))
 	if err != nil {
 		return
 	}
