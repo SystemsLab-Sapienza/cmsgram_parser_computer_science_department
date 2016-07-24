@@ -20,6 +20,13 @@ func Start(conf config.Config) {
 	const delay = 1 // Delay in minutes
 	var flist FeedList
 
+	// If the goroutine panics at any point, don't bring down the whole program
+	defer func() {
+		if err := recover(); err != nil {
+			log.Println("rssfeed panicked:", err)
+		}
+	}()
+
 	// Create the log file
 	f, err := os.OpenFile("rssfeed.log", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
 	if err != nil {

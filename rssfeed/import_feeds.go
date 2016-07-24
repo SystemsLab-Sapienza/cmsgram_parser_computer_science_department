@@ -10,7 +10,7 @@ import (
 	"github.com/garyburd/redigo/redis"
 )
 
-func importFeeds(filepath string) error {
+func ImportFeeds(filepath string) error {
 	var feed = struct {
 		Name string `redis:"name"`
 		Kind string `redis:"kind"`

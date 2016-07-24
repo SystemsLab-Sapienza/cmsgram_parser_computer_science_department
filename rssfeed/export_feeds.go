@@ -9,7 +9,7 @@ import (
 	"github.com/garyburd/redigo/redis"
 )
 
-func exportFeeds(filepath string) error {
+func ExportFeeds(filepath string) error {
 	conn := Pool.Get()
 	defer conn.Close()
 
