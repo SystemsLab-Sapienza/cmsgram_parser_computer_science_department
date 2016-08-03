@@ -5,21 +5,22 @@ import (
 )
 
 type News struct {
-	Url   string `redis:"url"`
+	URL   string `redis:"url"`
 	Title string `redis:"title"`
 	Date  string `redis:"date"`
-	Kind  string `redis:"content"`
+	Kind  string `redis:"kind"`
 }
 
 func fetchNews() (*[]News, error) {
 	var (
 		news     News
 		newslist []News = make([]News, 0)
-		url             = "http://www.studiareinformatica.uniroma1.it/avvisi"
+		URL             = "http://www.studiareinformatica.uniroma1.it/avvisi"
+		baseURL         = "http://www.studiareinformatica.uniroma1.it/"
 	)
 
 	// Fetch the web page
-	doc, err := goquery.NewDocument(url)
+	doc, err := goquery.NewDocument(URL)
 	if err != nil {
 		return nil, err
 	}
@@ -28,12 +29,12 @@ func fetchNews() (*[]News, error) {
 	content := doc.Find(".item-list > ul")
 
 	content.Children().Each(func(i int, s *goquery.Selection) {
-		// Scrape the title and url
+		// Scrape the title and URL
 		link := s.Find(".views-field-title > .field-content > a")
 		news.Title = link.Text()
-		news.Url, _ = link.Attr("href")
+		news.URL, _ = link.Attr("href")
 
-		news.Url = url + news.Url
+		news.URL = baseURL + news.URL
 
 		// Scrape the date
 		news.Date, _ = s.Find("span[property='dc:date']").Attr("content")

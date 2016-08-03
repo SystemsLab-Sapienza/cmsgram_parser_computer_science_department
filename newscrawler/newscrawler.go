@@ -52,7 +52,7 @@ func Start() {
 		defer conn.Close()
 
 		for _, n := range *news {
-			checksum := md5.Sum([]byte(n.Title + n.Date))
+			checksum := md5.Sum([]byte(n.URL + ":" + n.Date))
 			cs := string(checksum[:])
 
 			exists, err := redis.Bool(conn.Do("SISMEMBER", "crawler:news", cs))
