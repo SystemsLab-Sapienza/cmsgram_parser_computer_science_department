@@ -33,7 +33,7 @@ func (c *Config) Read(filepath string) error {
 	c.Init()
 	f, err := os.Open(filepath)
 	if err != nil {
-		log.Fatal("Can't find configuration file", err) // TODO handle file not found
+		log.Fatal("Can't find configuration file.", err)
 	}
 
 	r := csv.NewReader(f)

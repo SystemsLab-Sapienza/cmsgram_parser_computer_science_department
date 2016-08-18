@@ -19,8 +19,7 @@ func ImportFeeds(filepath string) error {
 
 	f, err := os.Open(filepath)
 	if err != nil {
-		log.Fatal("main: os.Open:", err) // TODO handle file not found
-		return err
+		log.Fatal("main: os.Open:", err)
 	}
 
 	conn := Pool.Get()
