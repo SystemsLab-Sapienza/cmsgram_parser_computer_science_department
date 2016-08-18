@@ -21,7 +21,7 @@ func sendUpdate(id string) (err error) {
 	}
 
 	// Send the payload
-	_, err = http.Post("http://localhost:8443/wl08ncvrqisnv1wu8unwl08k05vo81j9", "application/json", bytes.NewReader(data))
+	_, err = http.Post(conf.BotURI, "application/json", bytes.NewReader(data))
 	if err != nil {
 		return
 	}

@@ -6,29 +6,20 @@ import (
 	"strconv"
 	"time"
 
+	"bitbucket.org/ansijax/rfidlab_telegramdi_parser/config"
+
 	"github.com/garyburd/redigo/redis"
 )
 
-var pool *redis.Pool
-
-func init() {
-	pool = &redis.Pool{
-		MaxIdle:     3,
-		IdleTimeout: 240 * time.Second,
-		Dial: func() (redis.Conn, error) {
-			c, err := redis.Dial("unix", "/tmp/redis.sock")
-			if err != nil {
-				return nil, err
-			}
-
-			return c, err
-		},
-	}
-}
+// Global variables
+var (
+	conf config.Config
+	pool *redis.Pool
+)
 
 /* This assumes a news is uniquely identified by its URL+publication date.
  */
-func Start() {
+func Start(c config.Config) {
 	const delay = 5 // Delay in minutes
 
 	// If the goroutine panics at any point, don't bring down the whole program
@@ -37,6 +28,22 @@ func Start() {
 			log.Println("newscrawler panicked:", err)
 		}
 	}()
+
+	// Create a thread-safe connection pool for redis
+	pool = &redis.Pool{
+		MaxIdle:     c.RedisMaxIdle,
+		IdleTimeout: c.RedisIdleTimeout * time.Second,
+		Dial: func() (redis.Conn, error) {
+			c, err := redis.Dial(c.RedisDomain, c.RedisAddress)
+			if err != nil {
+				return nil, err
+			}
+
+			return c, err
+		},
+	}
+
+	conf = c
 
 	for {
 		// Parse the website for news
