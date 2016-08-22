@@ -1,7 +1,6 @@
 package newscrawler
 
 import (
-	"crypto/md5"
 	"log"
 	"strconv"
 	"time"
@@ -59,10 +58,7 @@ func Start(c config.Config) {
 		defer conn.Close()
 
 		for _, n := range *news {
-			checksum := md5.Sum([]byte(n.URL + ":" + n.Date))
-			cs := string(checksum[:])
-
-			exists, err := redis.Bool(conn.Do("SISMEMBER", "crawler:news", cs))
+			exists, err := redis.Bool(conn.Do("SISMEMBER", "crawler:news", n.Hash))
 			if err != nil {
 				log.Println(err)
 				return
@@ -81,7 +77,7 @@ func Start(c config.Config) {
 			// Store the news on the DB
 			conn.Send("MULTI")
 			conn.Send("HMSET", redis.Args{}.Add("crawler:news:"+strconv.Itoa(ID)).AddFlat(&n)...)
-			conn.Send("SADD", "crawler:news", cs)
+			conn.Send("SADD", "crawler:news", n.Hash)
 			_, err = conn.Do("EXEC")
 			if err != nil {
 				log.Println(err)

@@ -1,6 +1,8 @@
 package newscrawler
 
 import (
+	"crypto/md5"
+
 	"github.com/PuerkitoBio/goquery"
 )
 
@@ -9,6 +11,7 @@ type News struct {
 	Title string `redis:"title"`
 	Date  string `redis:"date"`
 	Kind  string `redis:"kind"`
+	Hash  string `redis:"hash"`
 }
 
 func fetchNews() (*[]News, error) {
@@ -41,6 +44,10 @@ func fetchNews() (*[]News, error) {
 
 		// Scrape the tag
 		news.Kind, _ = s.Find(".views-field-field-archivio > .field-content > a").Attr("href")
+
+		// Compute the news hash
+		checksum := md5.Sum([]byte(news.URL + ":" + news.Date))
+		news.Hash = string(checksum[:])
 
 		newslist = append(newslist, news)
 	})
