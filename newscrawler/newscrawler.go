@@ -20,7 +20,7 @@ var (
 /* This assumes a news is uniquely identified by its URL+publication date.
  */
 func Start(c config.Config) {
-	const delay = 5 // Delay in minutes
+	var delay = time.Duration(c.CrawlerDelay) // Delay in minutes
 
 	// If the goroutine panics at any point, don't bring down the whole program
 	defer func() {

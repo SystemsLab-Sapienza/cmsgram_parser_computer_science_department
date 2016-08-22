@@ -13,6 +13,9 @@ import (
 type Config struct {
 	BotURI string
 
+	CrawlerDelay int
+	RSSFeedDelay int
+
 	RedisDomain      string
 	RedisAddress     string
 	RedisMaxIdle     int
@@ -22,6 +25,9 @@ type Config struct {
 // Sets the default configuration
 func (c *Config) Init() {
 	c.BotURI = "/bot"
+
+	c.CrawlerDelay = 5
+	c.RSSFeedDelay = 1
 
 	c.RedisDomain = "tcp"
 	c.RedisAddress = "localhost:6379"
@@ -56,6 +62,20 @@ func (c *Config) Read(filepath string) error {
 		switch record[0] {
 		case "bot_URI":
 			c.BotURI = value
+		case "crawler_delay":
+			i, err := strconv.Atoi(value)
+			if err != nil {
+				fmt.Printf("crawler_delay value '%s' not valid. Using default.\n", value)
+			} else {
+				c.CrawlerDelay = i
+			}
+		case "rssfeed_delay":
+			i, err := strconv.Atoi(value)
+			if err != nil {
+				fmt.Printf("rssfeed_delay value '%s' not valid. Using default.\n", value)
+			} else {
+				c.RSSFeedDelay = i
+			}
 		case "redis_domain":
 			c.RedisDomain = value
 		case "redis_address":

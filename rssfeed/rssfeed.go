@@ -17,8 +17,10 @@ var (
 )
 
 func Start(conf config.Config) {
-	const delay = 1 // Delay in minutes
-	var flist FeedList
+	var (
+		delay = time.Duration(conf.RSSFeedDelay) // Delay in minutes
+		flist FeedList
+	)
 
 	// If the goroutine panics at any point, don't bring down the whole program
 	defer func() {
