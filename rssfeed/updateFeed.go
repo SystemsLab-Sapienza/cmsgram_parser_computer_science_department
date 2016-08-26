@@ -56,15 +56,17 @@ func updateFeed(f *Feed) (err error) {
 	fdate := f.Items[0].Date.Unix()
 	if lupdate == 0 || fdate > lupdate {
 		// Set the new time of last update
-		_, err = conn.Do("HSET", feed, "last_update", fdate) // TODO
+		_, err = conn.Do("HSET", feed, "last_update", fdate)
 		if err != nil {
 			log.Println(err)
 			return
 		}
 
-		if err = sendUpdate(f); err != nil {
-			log.Println(err)
-			return
+		if lupdate != 0 {
+			if err = sendUpdate(f); err != nil {
+				log.Println(err)
+				return
+			}
 		}
 	}
 
