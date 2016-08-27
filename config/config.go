@@ -16,6 +16,8 @@ type Config struct {
 	CrawlerDelay int
 	RSSFeedDelay int
 
+	CrawlerBaseURL string
+
 	RedisDomain      string
 	RedisAddress     string
 	RedisMaxIdle     int
@@ -76,6 +78,8 @@ func (c *Config) Read(filepath string) error {
 			} else {
 				c.RSSFeedDelay = i
 			}
+		case "crawler_base_URL":
+			c.CrawlerBaseURL = value
 		case "redis_domain":
 			c.RedisDomain = value
 		case "redis_address":

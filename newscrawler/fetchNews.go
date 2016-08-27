@@ -2,6 +2,7 @@ package newscrawler
 
 import (
 	"crypto/md5"
+	"encoding/hex"
 
 	"github.com/PuerkitoBio/goquery"
 )
@@ -18,12 +19,11 @@ func fetchNews() (*[]News, error) {
 	var (
 		news     News
 		newslist []News = make([]News, 0)
-		URL             = "http://www.studiareinformatica.uniroma1.it/avvisi"
-		baseURL         = "http://www.studiareinformatica.uniroma1.it/"
+
+		baseURL string = conf.CrawlerBaseURL
 	)
 
-	// Fetch the web page
-	doc, err := goquery.NewDocument(URL)
+	doc, err := goquery.NewDocument(baseURL + "/avvisi")
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func fetchNews() (*[]News, error) {
 
 		// Compute the news hash
 		checksum := md5.Sum([]byte(news.URL + ":" + news.Date))
-		news.Hash = string(checksum[:])
+		news.Hash = hex.EncodeToString(checksum[:])
 
 		newslist = append(newslist, news)
 	})
