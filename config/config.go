@@ -43,6 +43,7 @@ func (c *Config) Read(filepath string) error {
 	if err != nil {
 		log.Fatal("Can't find configuration file.", err)
 	}
+	defer f.Close()
 
 	r := csv.NewReader(f)
 	r.Comma = ':'
