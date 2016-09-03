@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	"fmt"
+	"log"
 
 	"bitbucket.org/ansijax/rfidlab_telegramdi_parser/config"
 	"bitbucket.org/ansijax/rfidlab_telegramdi_parser/newscrawler"
@@ -20,9 +20,8 @@ func main() {
 
 	flag.Parse()
 
-	if flagConfigFile == "" {
-		fmt.Println("You have to provide a configuration file: infext -c /path/to/file")
-		return
+	if len(flagConfigFile) == 0 {
+		log.Fatal("You have to provide a configuration file: infext -c /path/to/file")
 	}
 
 	// Read the configuration from the file

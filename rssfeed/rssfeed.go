@@ -70,6 +70,4 @@ func Start(conf config.Config) {
 		}
 		time.Sleep(delay * time.Minute)
 	}
-
-	return
 }
