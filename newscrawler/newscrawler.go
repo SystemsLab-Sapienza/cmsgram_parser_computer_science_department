@@ -16,7 +16,7 @@ var (
 	pool *redis.Pool
 )
 
-/* This assumes a news is uniquely identified by its URL+publication date.
+/* This assumes a news is uniquely identified by URL+publication date.
  */
 func Start(c config.Config) {
 	var delay = time.Duration(c.CrawlerDelay) // Delay in minutes
@@ -48,11 +48,9 @@ func Start(c config.Config) {
 		// Parse the website for news
 		news, err := fetchNews()
 		if err != nil {
-			log.Fatal(err)
+			log.Println(err)
+			time.Sleep(time.Minute)
 		}
-
-		// Check result for new items
-		// storeNewItems()
 
 		conn := pool.Get()
 		defer conn.Close()
