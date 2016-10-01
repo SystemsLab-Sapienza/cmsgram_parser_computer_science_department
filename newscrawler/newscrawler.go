@@ -83,7 +83,11 @@ func Start(c config.Config) {
 			}
 
 			// Send update to bot
-			go sendUpdate(strconv.Itoa(ID))
+			go func() {
+				if err := sendUpdate(strconv.Itoa(ID)); err != nil {
+					log.Println(err)
+				}
+			}()
 		}
 
 		time.Sleep(delay * time.Minute)

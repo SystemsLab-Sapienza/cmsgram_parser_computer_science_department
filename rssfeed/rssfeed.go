@@ -56,7 +56,6 @@ func Start(conf config.Config) {
 
 	Config = conf
 
-	// Fetch the feed's data
 	if err = loadFeeds(&flist); err != nil {
 		log.Fatal("Error while loading feeds:", err)
 	}
@@ -66,7 +65,11 @@ func Start(conf config.Config) {
 	for {
 		for _, f := range flist.feeds {
 			feed := f
-			go updateFeed(&feed)
+			go func() {
+				if err := updateFeed(&feed); err != nil {
+					log.Println(err)
+				}
+			}()
 		}
 		time.Sleep(delay * time.Minute)
 	}

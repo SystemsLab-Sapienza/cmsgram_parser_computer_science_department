@@ -3,7 +3,6 @@ package rssfeed
 import (
 	"bytes"
 	"encoding/json"
-	"log"
 	"net/http"
 	"strconv"
 
@@ -39,17 +38,15 @@ func updateFeed(f *Feed) (err error) {
 
 	err = f.Update()
 	if err != nil {
-		log.Println(err)
+		return
+	}
+
+	if len(f.Items) == 0 {
 		return
 	}
 
 	lupdate, err := redis.Int64(conn.Do("HGET", feed, "last_update"))
 	if err != nil && err != redis.ErrNil {
-		log.Println(err)
-		return
-	}
-
-	if len(f.Items) == 0 {
 		return
 	}
 
@@ -58,13 +55,11 @@ func updateFeed(f *Feed) (err error) {
 		// Set the new time of last update
 		_, err = conn.Do("HSET", feed, "last_update", fdate)
 		if err != nil {
-			log.Println(err)
 			return
 		}
 
 		if lupdate != 0 {
 			if err = sendUpdate(f); err != nil {
-				log.Println(err)
 				return
 			}
 		}
